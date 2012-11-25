@@ -5,20 +5,31 @@
 Build Twitter clone based on:
 <http://redis.io/topics/twitter-clone>
 
-Using Redis for datastore and Cuba + Coffeescript for web interface
+### Technologies
+
+- datastore:
+  - Redis
+
+- web interface
+  - Cuba
+  - Coffeescript
+  - HAML
 
 ## Schema
 
-    user:<id>:name - <string>
-    user:<id>:email - <string>
-    user:<id>:salt - <string>
-    user:<id>:hashed_password - <string>
+    global:nextPostId - <integer>
+    global:nextUserId - <integer>
+    username:<name>:id - <string> # look up id by username
+    user:<id>:name - <string>     # deprecated by above?
+    user:<id>:email - <string>    # move to user hash?
+    user:<id>:salt - <string>     # move to user hash?
+    user:<id>:hashed_password - <string> # move to user hash?
 
     user:<id>:followers - <list user IDs>
     user:<id>:following - <list user IDs>
     user:<id>:posts - <list, post IDs>
 
-    post:<id> - <string>, format: "<user-id>|<time>|content", or JSON?
+    post:<id>(:content?) - <string>, format: "<user-id>|<time>|content", or JSON?
 
 ## Models
 
@@ -29,6 +40,31 @@ class User < RedisModel
 end
 class Post < RedisModel
 ```
+
+## Actions
+
+### /
+
+timeline of posts
+
+### /:username
+
+### /:username/follow
+
+### /:username/unfollow
+
+### /:username/following
+
+### /:username/followers
+
+### /:username/mentions
+
+### /post/:id
+
+### /post POST params
+
+posts a message
+
 ## Reference
 
 - <http://redis.io/topics/data-types>
