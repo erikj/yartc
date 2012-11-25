@@ -1,0 +1,20 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    cuba (3.1.0)
+      rack
+    foreman (0.60.2)
+      thor (>= 0.13.6)
+    haml (3.1.7)
+    rack (1.4.1)
+    redis (3.0.2)
+    thor (0.16.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  cuba
+  foreman
+  haml
+  redis
