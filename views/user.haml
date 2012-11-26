@@ -1,1 +1,8 @@
 %h1= username + ' / ' + user.id
+
+%h2 Posts
+
+%ul
+
+  - user.posts.each do |post|
+    %li= post[:id].to_s + ": " + post[:content]
