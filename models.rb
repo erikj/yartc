@@ -45,13 +45,28 @@ class User < RedisModel
 end
 
 class Post < RedisModel
+
+  # create a post
   def self.create username, content
     id = redis.incr 'nextPostId'
     user_id = redis.get "username:#{username}:id"
     redis.set "post:#{id}:content", content
     redis.set "post:#{id}:user", user_id
     redis.rpush "user:#{user_id}:posts", id
+    redis.rpush "global:posts", id
     Post.new id
   end
+
+  # get all the posts, e.g. for timeline
+  def self.all
+
+    post_ids = redis.lrange "global:posts", 0, -1
+
+    posts = post_ids.collect{ |id| { :id=>id, :content=> redis.get( "post:#{id}:content" ) } }
+
+    return posts
+  end
+
+
 end
 

@@ -30,6 +30,7 @@ Build Twitter clone based on:
     user:<id>:posts - <list, post IDs>
 
     post:<id>(:content?) - <string>, format: "<user-id>|<time>|content", or JSON?
+    global:posts - <sorted set or list?> # global timeline of posts
 
 ## Models
 
@@ -47,7 +48,15 @@ class Post < RedisModel
 
 timeline of posts
 
+> Warning: consider KEYS as a command that should only be used in production environments with extreme care. It may ruin performance when it is executed against large databases. This command is intended for debugging and special operations, such as changing your keyspace layout. Don't use KEYS in your regular application code. If you're looking for a way to find keys in a subset of your keyspace, consider using sets. - <http://redis.io/commands/keys>
+
+### /user POST params
+
+create user
+
 ### /:username
+
+`:username` user's posts
 
 ### /:username/follow
 
