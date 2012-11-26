@@ -7,7 +7,6 @@ def redis
   $redis ||= Redis.new
 end
 
-
 class RedisModel
 
   attr_reader :id
@@ -16,6 +15,7 @@ class RedisModel
     @id = id
   end
 
+  # can properties be better implemented as key-value pairs of hashes?
   def self.property name
     klass = self.name.downcase
     self.class_eval <<-RUBY
@@ -73,7 +73,6 @@ class User < RedisModel
   end
   def posts
     post_ids = redis.lrange "user:#{id}:posts", 0, -1
-    # TODO: look up posts via Post class method
     posts = Post.find post_ids
   end
 
@@ -82,16 +81,21 @@ end
 class Post < RedisModel
 
   property :content
+  property :user
 
   # create a post
   def self.create username, content
     id = redis.incr 'nextPostId'
     user_id = redis.get "username:#{username}:id"
-    redis.set "post:#{id}:content", content
-    redis.set "post:#{id}:user", user_id
-    redis.rpush "user:#{user_id}:posts", id
+    post =  Post.new id
+
+    post.content = content
+    post.user    = user_id
+
+    user = User.new user_id
+    user.posts_push post
     redis.rpush "global:posts", id
-    Post.new id
+    return post
   end
 
   def self.find input=nil
