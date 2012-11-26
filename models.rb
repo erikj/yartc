@@ -12,26 +12,26 @@ class RedisModel
 
   attr_reader :id
 
-  def initialize(id)
+  def initialize id
     @id = id
   end
 
-  # def self.property(name)
-  #   klass = self.name.downcase
-  #   self.class_eval <<-RUBY
-  #     def #{name}
-  #       _#{name}
-  #     end
+  def self.property name
+    klass = self.name.downcase
+    self.class_eval <<-RUBY
+      def #{name}
+        _#{name}
+      end
 
-  #     def _#{name}
-  #       redis.get("#{klass}:id:" + id.to_s + ":#{name}")
-  #     end
+      def _#{name}
+        redis.get("#{klass}:" + id.to_s + ":#{name}")
+      end
 
-  #     def #{name}=(val)
-  #       redis.set("#{klass}:id:" + id.to_s + ":#{name}", val)
-  #     end
-  #   RUBY
-  # end
+      def #{name}=(val)
+        redis.set("#{klass}:" + id.to_s + ":#{name}", val)
+      end
+    RUBY
+  end
 
 end
 
@@ -52,12 +52,15 @@ class User < RedisModel
   end
   def posts
     post_ids = redis.lrange "user:#{id}:posts", 0, -1
-    posts = post_ids.collect{ |id| { :id=>id, :content=> redis.get( "post:#{id}:content" ) } }
+    # TODO: look up posts via Post class method
+    posts = Post.find post_ids
   end
 
 end
 
 class Post < RedisModel
+
+  property :content
 
   # create a post
   def self.create username, content
@@ -70,12 +73,27 @@ class Post < RedisModel
     Post.new id
   end
 
+  def self.find input=nil
+
+    if input.nil? or input == :all
+      return self.all
+    elsif input.is_a? Array
+      posts = []
+      input.each do |id|
+        posts << Post.new( id)
+      end
+      return posts
+    elsif input.is_a? String or input.is_a? Integer
+      return Post.new input
+    end
+  end
+
   # get all the posts, e.g. for timeline
   def self.all
 
     post_ids = redis.lrange "global:posts", 0, -1
 
-    posts = post_ids.collect{ |id| { :id=>id, :content=> redis.get( "post:#{id}:content" ) } }
+    posts = post_ids.collect{ |id| Post.new id }
 
     return posts
   end

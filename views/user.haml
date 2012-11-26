@@ -5,4 +5,4 @@
 %ul
 
   - user.posts.each do |post|
-    %li= post[:id].to_s + ": " + post[:content]
+    %li= post.id.to_s + ": " + post.content
