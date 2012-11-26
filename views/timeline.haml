@@ -1,0 +1,6 @@
+- posts ||= []
+
+%ul
+
+- posts.each do |post|
+  %li= post[:id].to_s + ": " + post[:content]

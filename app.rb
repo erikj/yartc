@@ -9,9 +9,10 @@ Cuba.plugin Cuba::Render
 
 Cuba.define do
   on get do
-    on root do
-      # get posts
 
+    on root do
+      res.write render( 'views/timeline.haml', :posts=>Post.all )
     end
+
   end
 end
