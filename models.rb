@@ -41,8 +41,9 @@ class RedisModel
       end
 
       def #{name}
+        has_many_class = Kernel.const_get '#{name}'.to_s.gsub(/(s)$/, '').to_s.capitalize
         many = redis.lrange #{name}_key, 0, -1
-        many.collect{ |m| self.new id }
+        many.collect{ |m| has_many_class.new m }
       end
 
       def #{name}_push pushed
@@ -70,10 +71,6 @@ class User < RedisModel
     id = redis.get "username:#{username}:id"
     return nil unless id
     User.new id
-  end
-  def posts
-    post_ids = redis.lrange "user:#{id}:posts", 0, -1
-    posts = Post.find post_ids
   end
 
 end
