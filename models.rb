@@ -2,11 +2,13 @@ require 'redis'
 
 # https://github.com/danlucraft/retwis-rb/blob/master/domain.rb
 
+# connect to redis if needed, return redis connection
+def redis
+  $redis ||= Redis.new
+end
+
+
 class RedisModel
-  # connect to redis if needed, return redis connection
-  def self.redis
-    $redis ||= Redis.new
-  end
 
   attr_reader :id
 
