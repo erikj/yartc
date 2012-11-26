@@ -1,9 +1,10 @@
-# redis-twitter-clone
+# Yet Another Redis-Twitter Clone
 
-## Idea
+## Concept
 
 Build Twitter clone based on:
 <http://redis.io/topics/twitter-clone>
+to try out integration of various interesting technologies:
 
 ### Technologies
 
@@ -15,10 +16,18 @@ Build Twitter clone based on:
   - Coffeescript
   - HAML
 
+- host:
+  - Heroku
+
+- datastore persistence
+  - postgresql
+  - exports / imports via rake tasks
+
 ## Schema
 
     global:nextPostId - <integer>
     global:nextUserId - <integer>
+    global:posts - <sorted set or list?> # global timeline of posts
     username:<name>:id - <string> # look up id by username
     user:<id>:name - <string>     # deprecated by above?
     user:<id>:email - <string>    # move to user hash?
@@ -29,8 +38,9 @@ Build Twitter clone based on:
     user:<id>:following - <list user IDs>
     user:<id>:posts - <list, post IDs>
 
-    post:<id>(:content?) - <string>, format: "<user-id>|<time>|content", or JSON?
-    global:posts - <sorted set or list?> # global timeline of posts
+    post:<id>:content - <string>
+    post:<id>:user - <string, user ID>
+    post:<id>:created_at - <string, create time> # serialize for time zone?
 
 ## Models
 
@@ -48,7 +58,7 @@ class Post < RedisModel
 
 timeline of posts
 
-> Warning: consider KEYS as a command that should only be used in production environments with extreme care. It may ruin performance when it is executed against large databases. This command is intended for debugging and special operations, such as changing your keyspace layout. Don't use KEYS in your regular application code. If you're looking for a way to find keys in a subset of your keyspace, consider using sets. - <http://redis.io/commands/keys>
+`global:posts` - list of post IDs
 
 ### /user POST params
 
