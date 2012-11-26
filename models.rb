@@ -33,9 +33,30 @@ class RedisModel
     RUBY
   end
 
+  def self.has_many name
+    klass = self.name.downcase
+    self.class_eval <<-RUBY
+      def #{name}_key
+        "#{klass}:" + id.to_s + ":#{name}"
+      end
+
+      def #{name}
+        many = redis.lrange #{name}_key, 0, -1
+        many.collect{ |m| self.new id }
+      end
+
+      def #{name}_push pushed
+      # FIXME: def #{ name }<<
+        puts pushed.inspect
+        redis.rpush #{name}_key, pushed.id
+      end
+    RUBY
+  end
+
 end
 
 class User < RedisModel
+  has_many :posts
 
   def self.create username #, email
     id = redis.incr 'nextUserId'
