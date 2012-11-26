@@ -50,6 +50,10 @@ class User < RedisModel
     return nil unless id
     User.new id
   end
+  def posts
+    post_ids = redis.lrange "user:#{id}:posts", 0, -1
+    posts = post_ids.collect{ |id| { :id=>id, :content=> redis.get( "post:#{id}:content" ) } }
+  end
 
 end
 
