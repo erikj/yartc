@@ -11,6 +11,7 @@ Cuba.define do
   on get do
 
     on root do
+      # TODO: if user is logged in, display user's timeline, else display global timeline
       res.write render( 'views/timeline.haml', :posts=>Post.all )
     end
 
@@ -23,6 +24,7 @@ Cuba.define do
         res.write render( 'views/user.haml', {:username=>username, :user=>user})
       else
         res.status = 404
+        # TODO: move to dedicated 404 page
         res.write "<h1>404: Not Found</h1>"
       end
     end

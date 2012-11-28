@@ -7,6 +7,8 @@ def redis
   $redis ||= Redis.new
 end
 
+# TODO: move to lib/redis-model.rb
+
 class RedisModel
 
   attr_reader :id
@@ -56,6 +58,8 @@ class RedisModel
 
 end
 
+# TODO: move to app/models/user.rb
+
 class User < RedisModel
   has_many :posts
 
@@ -74,6 +78,8 @@ class User < RedisModel
   end
 
 end
+
+# TODO: move to app/models/post.rb
 
 class Post < RedisModel
 
@@ -95,6 +101,7 @@ class Post < RedisModel
     return post
   end
 
+  # TODO: generalize and move to RedisModel
   def self.find input=nil
 
     if input.nil? or input == :all
@@ -113,13 +120,10 @@ class Post < RedisModel
   # get all the posts, e.g. for timeline
   def self.all
 
+    # TODO: move to and call find :all
     post_ids = redis.lrange "global:posts", 0, -1
-
     posts = post_ids.collect{ |id| Post.new id }
-
     return posts
   end
 
-
 end
-
