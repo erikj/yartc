@@ -17,6 +17,30 @@ class RedisModel
     @id = id
   end
 
+  # finders
+  def self.find input=nil
+
+    if input.nil? or input == :all
+      return self.all
+    elsif input.is_a? Array
+      posts = []
+      input.each do |id|
+        posts << self.new( id)
+      end
+      return posts
+    elsif input.is_a? String or input.is_a? Integer
+      return self.new input
+    end
+  end
+
+  # get all the elements, e.g. posts for timeline
+  def self.all
+    # TODO: move to and call find :all
+    post_ids = redis.lrange "global:#{self.name.downcase}s", 0, -1
+    posts = post_ids.collect{ |id| self.new id }
+    return posts
+  end
+
   # can properties be better implemented as key-value pairs of hashes?
   def self.property name
     klass = self.name.downcase
@@ -99,31 +123,6 @@ class Post < RedisModel
     user.posts_push post
     redis.rpush "global:posts", id
     return post
-  end
-
-  # TODO: generalize and move to RedisModel
-  def self.find input=nil
-
-    if input.nil? or input == :all
-      return self.all
-    elsif input.is_a? Array
-      posts = []
-      input.each do |id|
-        posts << Post.new( id)
-      end
-      return posts
-    elsif input.is_a? String or input.is_a? Integer
-      return Post.new input
-    end
-  end
-
-  # get all the posts, e.g. for timeline
-  def self.all
-
-    # TODO: move to and call find :all
-    post_ids = redis.lrange "global:posts", 0, -1
-    posts = post_ids.collect{ |id| Post.new id }
-    return posts
   end
 
 end
