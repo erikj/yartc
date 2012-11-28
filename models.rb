@@ -59,6 +59,9 @@ class RedisModel
     RUBY
   end
 
+  # TODO: has_many name, klass=nil (?)
+  # e.g. User.has_many followers, User
+  # e.g. User.has_many following, User
   def self.has_many name
     klass = self.name.downcase
     self.class_eval <<-RUBY
