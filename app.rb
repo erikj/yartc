@@ -2,8 +2,11 @@ require "cuba"
 require "cuba/render"
 require 'haml'
 
-require File.expand_path 'models', File.dirname(__FILE__)
+require File.join File.expand_path( File.dirname __FILE__ ), 'lib', 'redis-models'
 
+Dir[ File.join File.expand_path( File.dirname __FILE__ ), 'models', '*.rb' ].each do |model_file|
+  require model_file
+end
 
 Cuba.plugin Cuba::Render
 
