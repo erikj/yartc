@@ -51,7 +51,7 @@ class RedisModel
       def #{name}_push pushed
       # FIXME: def #{ name }<<
         puts pushed.inspect
-        redis.rpush #{name}_key, pushed.id
+        redis.lpush #{name}_key, pushed.id
       end
     RUBY
   end
