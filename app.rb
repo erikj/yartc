@@ -1,8 +1,9 @@
 require "cuba"
 require "cuba/render"
 require 'haml'
+require 'ohm'
 
-require File.join File.expand_path( File.dirname __FILE__ ), 'lib', 'redis-models'
+Ohm.connect
 
 Dir[ File.join File.expand_path( File.dirname __FILE__ ), 'models', '*.rb' ].each do |model_file|
   require model_file
@@ -22,7 +23,7 @@ Cuba.define do
     # this should be last
     # if user is not found, return 404
     on "(\\w+)" do |username|
-      user = User.find_by_username(username)
+      user = User.find(:name=>username).first
       if user
         res.write render( 'views/user.haml', {:username=>username, :user=>user})
       else
