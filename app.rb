@@ -1,8 +1,9 @@
 require "cuba"
 require "cuba/render"
 require 'haml'
+require 'ohm'
 
-require File.join File.expand_path( File.dirname __FILE__ ), 'lib', 'redis-models'
+Ohm.connect
 
 Dir[ File.join File.expand_path( File.dirname __FILE__ ), 'models', '*.rb' ].each do |model_file|
   require model_file
