@@ -23,7 +23,7 @@ Cuba.define do
     # this should be last
     # if user is not found, return 404
     on "(\\w+)" do |username|
-      user = User.find_by_username(username)
+      user = User.find(:name=>username).first
       if user
         res.write render( 'views/user.haml', {:username=>username, :user=>user})
       else
