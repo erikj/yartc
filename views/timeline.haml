@@ -4,4 +4,6 @@
 
   - posts.each do |post|
     / TODO: display username of poster
-    %li= post.id.to_s + ": " + post.content
+    %li
+      = post.id.to_s + ": " + (post.content ? post.content : '')
+      = "<i>#{post.created_at}</i>"
