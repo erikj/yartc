@@ -16,7 +16,7 @@ Cuba.define do
 
     on root do
       # TODO: if user is logged in, display user's timeline, else display global timeline
-      res.write render( 'views/timeline.haml', :posts=>Post.all )
+      res.write render( 'views/timeline.haml', :posts=>Post.all.sort_by(:created_at, :order=>"DESC") )
     end
 
     # /:username
