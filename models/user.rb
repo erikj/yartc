@@ -2,7 +2,11 @@ class User < Ohm::Model
 
   attribute :name
   index :name
+  unique :name
+
   attribute :email
+  unique :email
+
   collection :posts, :Post
 
   def validate
