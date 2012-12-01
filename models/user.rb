@@ -2,6 +2,7 @@ class User < Ohm::Model
 
   attribute :name
   index :name
+  unique :name
   attribute :email
   collection :posts, :Post
 
