@@ -8,6 +8,7 @@ class Post < Ohm::Model
   def validate
     assert_present :user_id
     assert_numeric :user_id
+    assert_length :content, 1..140
     assert_present :created_at
     assert_numeric :created_at
     assert_length  :created_at, 8..12
