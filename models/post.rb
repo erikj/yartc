@@ -14,8 +14,8 @@ class Post < Ohm::Model
   end
 
   class << self
+    # FIXME: this doesn't apply :created_at when Post is created via Post::new(); Post#save()
     alias_method :original_create, :create
-
     def create options={}
       options[:created_at] = Time.now.to_i unless options.has_key?(:created_at)
       original_create options
