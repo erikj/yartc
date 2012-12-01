@@ -5,6 +5,11 @@ class Post < Ohm::Model
   attribute :created_at
   index     :created_at
 
+  def validate
+    assert_present :user_id
+    assert_numeric :user_id
+  end
+
   class << self
     alias_method :original_create, :create
 
