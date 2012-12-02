@@ -23,36 +23,15 @@ to try out integration of various interesting technologies:
   - postgresql
   - exports / imports via rake tasks
 
-## Schema
-
-    global:nextPostId - <integer>
-    global:nextUserId - <integer>
-    global:posts - <sorted set or list?> # global timeline of posts
-    username:<name>:id - <string> # look up id by username
-    user:<id>:name - <string>     # deprecated by above?
-    user:<id>:email - <string>    # move to user hash?
-    user:<id>:salt - <string>     # move to user hash?
-    user:<id>:hashed_password - <string> # move to user hash?
-
-    user:<id>:followers - <list user IDs>
-    user:<id>:following - <list user IDs>
-    user:<id>:posts - <list, post IDs>
-
-    post:<id>:content - <string>
-    post:<id>:user - <string, user ID>
-    post:<id>:created_at - <string, create time> # serialize for time zone?
-
 ## Models
 
-create `RedisModel` based on <https://github.com/danlucraft/retwis-rb/blob/master/domain.rb>
+Using [**ohm** Object-hash mapping library for Redis](http://soveran.github.com/ohm/)
 
-```
-class User < RedisModel
-end
-class Post < RedisModel
-```
+### Schema
 
-## Actions
+Defined in `models/*.rb` and handled by **ohm**
+
+## TODO: Actions
 
 ### /
 
@@ -63,6 +42,14 @@ timeline of posts
 ### /user POST params
 
 create user
+
+### /login GET
+
+display login form
+
+### /login POST
+
+log user in
 
 ### /:username
 
@@ -84,7 +71,7 @@ create user
 
 posts a message
 
-## Reference
+## References
 
 - <http://redis.io/topics/data-types>
 - <http://redis.io/topics/twitter-clone>
@@ -92,7 +79,7 @@ posts a message
 - <http://jimneath.org/2011/03/24/using-redis-with-ruby-on-rails.html>
 - <https://github.com/danlucraft/retwis-rb>
 
-## Load and benchmark w/ random data
+## TODO: Load and benchmark w/ random data
 
 <http://stackoverflow.com/questions/88311/how-best-to-generate-a-random-string-in-ruby>
 
