@@ -19,6 +19,12 @@ Cuba.define do
       res.write render('views/layout.haml') { render( 'views/timeline.haml', :posts=>Post.all.sort_by(:created_at, :order=>"DESC") ) }
     end
 
+    css_dir = 'css'
+    on css_dir, extension('css') do |file|
+      res.headers["Content-Type"] = "text/css; charset=utf-8"
+      res.write File.read "public/#{css_dir}/#{file}.css"
+    end
+
     # /:username
     # this should be last
     # if user is not found, return 404
