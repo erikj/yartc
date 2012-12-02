@@ -16,7 +16,7 @@ Cuba.define do
 
     on root do
       # TODO: if user is logged in, display user's timeline, else display global timeline
-      res.write render( 'views/timeline.haml', :posts=>Post.all.sort_by(:created_at, :order=>"DESC") )
+      res.write render('views/layout.haml') { render( 'views/timeline.haml', :posts=>Post.all.sort_by(:created_at, :order=>"DESC") ) }
     end
 
     # /:username
@@ -25,11 +25,11 @@ Cuba.define do
     on "(\\w+)" do |username|
       user = User.find(:name=>username).first
       if user
-        res.write render( 'views/user.haml', {:username=>username, :user=>user})
+        res.write render('views/layout.haml') { render( 'views/user.haml', {:username=>username, :user=>user}) }
       else
         res.status = 404
         # TODO: move to dedicated 404 page
-        res.write "<h1>404: Not Found</h1>"
+        res.write render('views/layout.haml') { "<h1>404: Not Found</h1>" }
       end
     end
 
