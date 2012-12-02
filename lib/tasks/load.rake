@@ -1,6 +1,6 @@
-require 'ohm'
 
-def load_models
+task :load_models do
+  require 'ohm'
   Ohm.connect
   Dir[ File.join File.expand_path( File.dirname __FILE__ ), '..', '..', 'models', '*.rb' ].each do |model_file|
     require model_file
@@ -10,9 +10,8 @@ end
 yml_file = 'db/fixtures/demo.yml'
 
 desc "load demo fixtures data from #{yml_file} into database"
-task :load do
+task :load=>:load_models do
 
-  load_models
   yml = YAML.load_file yml_file
 
   yml['users'].each do |user_opts|
