@@ -10,7 +10,7 @@ end
 yml_file = 'db/fixtures/demo.yml'
 
 desc "load demo fixtures data from #{yml_file} into database"
-task :load do |t|
+task :load do
 
   load_models
   yml = YAML.load_file yml_file
@@ -25,8 +25,19 @@ task :load do |t|
     # puts user.inspect
   end
 
-  # yml['posts'].each do |post_opts|
-  #   puts post_opts.inspect
-  # end
+  yml['posts'].each do |post_opts|
+    # puts post_opts.inspect
+    user = nil
+    if post_opts.has_key? 'user'
+      user = User.find(:name=>post_opts['user']).first
+      post_opts['user'] = user
+    end
+
+    if user
+      post = Post.create post_opts
+      puts "created post: #{post.inspect}"
+    end
+
+  end
 
 end
