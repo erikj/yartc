@@ -4,5 +4,5 @@
 
 %ul
 
-  - user.posts.each do |post|
-    %li= post.id.to_s + ": " + post.content
+  - user.posts.sort_by(:created_at, :order=>"DESC").each do |post|
+    %li= post.id.to_s + ": " + post.content + "<i>#{post.created_at}</i>"

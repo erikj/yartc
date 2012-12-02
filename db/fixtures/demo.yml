@@ -1,0 +1,15 @@
+users:
+  - name: erikj
+    email: erik@erikj.me
+  - name: jjjj
+    email: jj@jj.me
+
+posts:
+  - user: erikj
+    content: hello hello
+  - user: erikj
+    content: hello again
+  - user: jjjj
+    content: jjjjjjjjjjjjj
+  - user: jjjj
+    content: more j's
