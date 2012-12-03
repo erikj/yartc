@@ -1,9 +1,11 @@
 - posts ||= []
 
-%ul
+.row-fluid
+  %div{:class=>"span10 offset1"}
 
-  - posts.each do |post|
-    / TODO: display username of poster
-    %li
-      = post.id.to_s + ": " + (post.content ? post.content : '')
-      = "<i>#{post.created_at}</i>"
+    - posts.each do |post|
+      .row
+        / TODO: display username of poster
+        %div{:class=>"span8"}
+          = post.id.to_s + ": " + (post.content ? post.content : '')
+          = "<i>#{post.created_at}</i>"
