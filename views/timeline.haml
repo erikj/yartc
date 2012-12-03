@@ -1,6 +1,11 @@
 - posts ||= []
 
 .row-fluid
+  %div{:class=>"span12"}
+    %h1== Global Timeline
+
+
+.row-fluid
   %div{:class=>"span10 offset1"}
 
     - posts.each do |post|
