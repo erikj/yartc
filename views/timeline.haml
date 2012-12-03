@@ -15,4 +15,4 @@
           %div= post.id.to_s
           %div= post.content
           %div
-            %i= post.created_at
+            %i= Time.at post.created_at.to_i
