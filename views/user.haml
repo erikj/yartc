@@ -1,8 +1,3 @@
 %h1= username + ' / ' + user.id
 
-%h2 Posts
-
-%ul
-
-  - user.posts.sort_by(:created_at, :order=>"DESC").each do |post|
-    %li= post.id.to_s + ": " + post.content + "<i>#{post.created_at}</i>"
+= render 'views/_timeline.haml', {:user=>user, :posts=>user.posts}
