@@ -10,9 +10,9 @@
 
     - posts.each do |post|
       .row
-        / TODO: display username of poster
         %div{:class=>"span8 post"}
-          %div= post.id.to_s
+          %div
+            %b= post.user.name
           %div= post.content
           %div
             %i= Time.at post.created_at.to_i
