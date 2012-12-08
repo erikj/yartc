@@ -25,6 +25,16 @@ Cuba.define do
       res.write File.read "public/#{css_dir}/#{file}.css"
     end
 
+    on 'login' do
+      # TODO: render('views/layout.haml') {'views/layout'}
+    end
+
+    on 'logout' do
+      # TODO: read username from session cookie
+      # TODO: delete session cookie
+      # TODO: redirect to '/'
+    end
+
     # /:username
     # this should be last
     # if user is not found, return 404
@@ -40,4 +50,13 @@ Cuba.define do
     end
 
   end
+
+  on post do
+    on '/login' do
+      # TODO: look-up user and authenticate based on params[]
+      # TODO: set session cookie
+      # TODO: redirect to /#{username}
+    end
+  end
+
 end
