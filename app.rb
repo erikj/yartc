@@ -53,11 +53,21 @@ Cuba.define do
   end
 
   on post do
-    on '/login' do
-      # TODO: look-up user and authenticate based on params[]
-      # TODO: set session cookie
-      # TODO: redirect to /#{username}
+
+    on 'login' do
+      on param('username'), param('password'), param('remember-me') do |username,password,remember_me|
+        res.write [username,password,remember_me].join(' | ')
+        # TODO: look-up user and authenticate based on params[]
+        # TODO: set session cookie
+        # TODO: redirect to /#{username}
+      end
+
+      # catchall for missing params
+      on true do
+        res.write render('views/layout.haml') { "oops!"}
+      end
     end
+
   end
 
 end
