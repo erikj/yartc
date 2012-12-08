@@ -10,6 +10,7 @@ Dir[ File.join File.expand_path( File.dirname __FILE__ ), 'models', '*.rb' ].eac
 end
 
 Cuba.plugin Cuba::Render
+Cuba.use Rack::Session::Cookie
 
 Cuba.define do
   on get do
@@ -26,7 +27,7 @@ Cuba.define do
     end
 
     on 'login' do
-      # TODO: render('views/layout.haml') {'views/layout'}
+      res.write render('views/layout.haml') { render 'views/login.haml' }
     end
 
     on 'logout' do
