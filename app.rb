@@ -41,6 +41,10 @@ Cuba.define do
       res.write File.read "public/#{css_dir}/#{file}.css"
     end
 
+    on 'signup' do
+      res.write render('views/layout.haml') { render 'views/signup.haml' }
+    end
+
     on 'login' do
       res.write render('views/layout.haml') { render 'views/login.haml' }
     end
@@ -48,6 +52,9 @@ Cuba.define do
     on 'logout' do
       # TODO: read username from session cookie
       # TODO: delete session cookie
+      session['user_id'] = nil
+      res.write "I am logout " + session.inspect
+
       # TODO: redirect to '/'
     end
 
@@ -68,6 +75,31 @@ Cuba.define do
   end
 
   on post do
+
+    on 'signup' do
+      on param('username'), param('email'), param('password'), param('confirm_password') do |username,email,password,confirm_password|
+        if password == confirm_password
+          user = User.new :name=>username, :email=>email
+          user.salt = user.mk_salt
+          user.hashed_password = user.hash_password password
+          if user.save
+            session['user_id'] = user.id
+            res.redirect '/'
+          else
+            res.write "error: #{user.errors.inspect}"
+          end
+        else
+          res.write "error: passwords must match"
+
+        end
+        # TODO: populate flash message w/ 'success'
+      end
+
+      # catchall for missing params
+      on true do
+        res.write render('views/layout.haml') { "oops!"}
+      end
+    end
 
     on 'login' do
       on param('username'), param('password'), param('remember-me') do |username,password,remember_me|
