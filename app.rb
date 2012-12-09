@@ -50,12 +50,9 @@ Cuba.define do
     end
 
     on 'logout' do
-      # TODO: read username from session cookie
-      # TODO: delete session cookie
       session['user_id'] = nil
-      res.write "I am logout " + session.inspect
-
-      # TODO: redirect to '/'
+      # res.write "I am logout " + session.inspect
+      res.redirect '/login'
     end
 
     # /:username
@@ -111,9 +108,8 @@ Cuba.define do
           session['user_id'] = user.id
           session[:requester] = env['REMOTE_ADDR']
           # TODO: set cookie expiration based on remember_me
-          # TODO: authenticate based on params[]
-          res.write [username,password,remember_me, session.inspect].join(' | ')
-          # TODO: redirect to /
+          # res.write [username,password,remember_me, session.inspect].join(' | ')
+          res.redirect '/'
         else
           res.redirect '/login'
         end
