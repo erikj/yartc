@@ -12,12 +12,27 @@ end
 Cuba.plugin Cuba::Render
 Cuba.use Rack::Session::Cookie
 
+def current_user
+  user = nil
+  if session['user_id']
+    user = User[session['user_id']]
+  end
+  return user
+end
+
 Cuba.define do
   on get do
 
     on root do
-      # TODO: if user is logged in, display user's timeline, else display global timeline
-      res.write render('views/layout.haml') { render( 'views/timeline.haml', :posts=>Post.all.sort_by(:created_at, :order=>"DESC") ) }
+      # if user is logged in, display user's timeline, else display global timeline
+      res.write render('views/layout.haml') {
+        if current_user
+          # TODO: display posts of current_user and users that current_user is following
+          render( 'views/timeline.haml', :posts=>current_user.posts.sort_by(:created_at, :order=>"DESC") )
+        else
+          render( 'views/timeline.haml', :posts=>Post.all.sort_by(:created_at, :order=>"DESC") )
+        end
+      }
     end
 
     css_dir = 'css'
