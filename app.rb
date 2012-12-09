@@ -56,10 +56,19 @@ Cuba.define do
 
     on 'login' do
       on param('username'), param('password'), param('remember-me') do |username,password,remember_me|
-        res.write [username,password,remember_me].join(' | ')
-        # TODO: look-up user and authenticate based on params[]
-        # TODO: set session cookie
-        # TODO: redirect to /#{username}
+        # look-up user based on params[]
+        user = User.find(:name=>username).first
+        if user
+          # set session cookie
+          session['user_id'] = user.id
+          session[:requester] = env['REMOTE_ADDR']
+          # TODO: set cookie expiration based on remember_me
+          # TODO: authenticate based on params[]
+          res.write [username,password,remember_me, session.inspect].join(' | ')
+          # TODO: redirect to /
+        else
+          res.redirect '/login'
+        end
       end
 
       # catchall for missing params
