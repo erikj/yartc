@@ -5,9 +5,18 @@
     %link{ :href=>"/css/bootstrap_and_overrides.css", :rel=>"stylesheet" }
     %link{ :href=>"/css/yartc.css", :rel=>"stylesheet" }
   %body
-    .navbar.navbar-fixed-top
-      .navbar-inner
-        .container
+    .container
+      .navbar.navbar-fixed-top
+        .navbar-inner
           %a.brand{:href => "#"} YARTC
+          %ul{:class=>'nav pull-right'}
+            - if current_user
+              %li
+                %a{:href=>'/logout'} Logout
+            - else
+              %li
+                %a{:href=>'/login'} Login
+              %li
+                %a{:href=>'/signup'} Sign Up
     .container
       = yield
