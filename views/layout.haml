@@ -9,5 +9,12 @@
       .navbar-inner
         .container
           %a.brand{:href => "#"} YARTC
+          %ul.nav
+            - if current_user
+              %li
+                %a{:href=>'/logout'} Logout
+            - else
+              %li
+                %a{:href=>'/login'} Login
     .container
       = yield
