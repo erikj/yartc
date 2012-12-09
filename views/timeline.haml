@@ -2,7 +2,12 @@
 
 .row-fluid
   %div{:class=>"span12"}
-    %h1== Global Timeline
+    %h1
+      - if current_user
+        = current_user.name
+      - else
+        Global
+      Timeline
 
 
 = render 'views/_timeline.haml', :posts=>posts
