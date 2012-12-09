@@ -77,9 +77,10 @@ Cuba.define do
   on post do
 
     on 'signup' do
-      on param('username'), param('email'), param('password'), param('confirm_password') do |username,email,password,confirm_password|
+      # on param('username'), param('email'), param('password'), param('confirm_password') do |username,email,password,confirm_password|
+      on param('username'), param('password'), param('confirm_password') do |username, password, confirm_password|
         if password == confirm_password
-          user = User.new :name=>username, :email=>email
+          user = User.new :name=>username #, :email=>email
           user.salt = user.mk_salt
           user.hashed_password = user.hash_password password
           if user.save
