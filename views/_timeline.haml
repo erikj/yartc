@@ -1,0 +1,16 @@
+- posts ||= []
+- user  ||= nil
+
+.row-fluid
+  %div{:class=>"span10 offset1"}
+
+    - posts.each do |post|
+      .row
+        %div{:class=>"span8 post"}
+          - unless user and user==post.user
+            %div
+              %a{:href=>"/#{post.user.name}"}
+                %b= post.user.name
+          %div= post.content
+          %div
+            %i= Time.at post.created_at.to_i

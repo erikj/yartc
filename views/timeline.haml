@@ -1,9 +1,13 @@
 - posts ||= []
 
-%ul
+.row-fluid
+  %div{:class=>"span12"}
+    %h1
+      - if current_user
+        = current_user.name
+      - else
+        Global
+      Timeline
 
-  - posts.each do |post|
-    / TODO: display username of poster
-    %li
-      = post.id.to_s + ": " + (post.content ? post.content : '')
-      = "<i>#{post.created_at}</i>"
+
+= render 'views/_timeline.haml', :posts=>posts
