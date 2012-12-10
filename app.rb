@@ -3,7 +3,11 @@ require "cuba/render"
 require 'haml'
 require 'ohm'
 
-Ohm.connect
+if ENV.has_key? 'REDISTOGO_URL'
+  Ohm.connect ENV['REDISTOGO_URL']
+else
+  Ohm.connect
+end
 
 Dir[ File.join File.expand_path( File.dirname __FILE__ ), 'models', '*.rb' ].each do |model_file|
   require model_file
