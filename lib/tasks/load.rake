@@ -1,6 +1,7 @@
 
 task :load_models do
   require 'ohm'
+  ENV['REDIS_URL'] = ENV['REDISTOGO_URL'] if ENV.has_key? 'REDISTOGO_URL'
   Ohm.connect
   Dir[ File.join File.expand_path( File.dirname __FILE__ ), '..', '..', 'models', '*.rb' ].each do |model_file|
     require model_file
