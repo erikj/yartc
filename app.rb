@@ -14,6 +14,8 @@ end
 Cuba.plugin Cuba::Render
 Cuba.use Rack::Session::Cookie
 
+Cuba.use Rack::Static, root: 'public', urls: ['/css']
+
 def current_user
   user = nil
   if session['user_id']
@@ -35,12 +37,6 @@ Cuba.define do
           render( 'views/timeline.haml', :posts=>Post.all.sort_by(:created_at, :order=>"DESC") )
         end
       }
-    end
-
-    css_dir = 'css'
-    on css_dir, extension('css') do |file|
-      res.headers["Content-Type"] = "text/css; charset=utf-8"
-      res.write File.read "public/#{css_dir}/#{file}.css"
     end
 
     on 'signup' do
