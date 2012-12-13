@@ -62,8 +62,7 @@ Cuba.define do
         res.write view('user', {:username=>username, :user=>user})
       else
         res.status = 404
-        # TODO: move to dedicated 404 page
-        res.write view('<h1>404: Not Found</h1>')
+        res.write view('404')
       end
     end
 
