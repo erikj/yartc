@@ -13,6 +13,8 @@ end
 
 Cuba.plugin Cuba::Render
 Cuba.use Rack::Session::Cookie
+Cuba.settings[:render][:template_engine] = "haml"
+
 
 Cuba.use Rack::Static, root: 'public', urls: ['/css']
 
@@ -29,22 +31,20 @@ Cuba.define do
 
     on root do
       # if user is logged in, display user's timeline, else display global timeline
-      res.write render('views/layout.haml') {
-        if current_user
-          # TODO: display posts of current_user and users that current_user is following
-          render( 'views/timeline.haml', :posts=>current_user.posts.sort_by(:created_at, :order=>"DESC") )
-        else
-          render( 'views/timeline.haml', :posts=>Post.all.sort_by(:created_at, :order=>"DESC") )
-        end
-      }
+      if current_user
+        # TODO: display posts of current_user and users that current_user is following
+        res.write view('timeline', :posts=>current_user.posts.sort_by(:created_at, :order=>"DESC"))
+      else
+        res.write view('timeline', :posts=>Post.all.sort_by(:created_at, :order=>"DESC"))
+      end
     end
 
     on 'signup' do
-      res.write render('views/layout.haml') { render 'views/signup.haml' }
+      res.write view('signup')
     end
 
     on 'login' do
-      res.write render('views/layout.haml') { render 'views/login.haml' }
+      res.write view('login')
     end
 
     on 'logout' do
@@ -59,11 +59,10 @@ Cuba.define do
     on "(\\w+)" do |username|
       user = User.find(:name=>username).first
       if user
-        res.write render('views/layout.haml') { render( 'views/user.haml', {:username=>username, :user=>user}) }
+        res.write view('user', {:username=>username, :user=>user})
       else
         res.status = 404
-        # TODO: move to dedicated 404 page
-        res.write render('views/layout.haml') { "<h1>404: Not Found</h1>" }
+        res.write view('404')
       end
     end
 
@@ -93,7 +92,7 @@ Cuba.define do
 
       # catchall for missing params
       on true do
-        res.write render('views/layout.haml') { "oops!"}
+        res.write view('oops!')
       end
     end
 
@@ -115,7 +114,7 @@ Cuba.define do
 
       # catchall for missing params
       on true do
-        res.write render('views/layout.haml') { "oops!"}
+        res.write view('oops!')
       end
     end
 
