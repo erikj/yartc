@@ -88,3 +88,7 @@ posts a message
     [molecule@air] rvm use ruby-1.9.2-p318
     [molecule@air] time ruby -e "puts (0...2560000).map{65.+(rand(26)).chr}.join()">/dev/null  
     real	0m1.513s
+
+## License
+
+This software is licensed under the [MIT license](http://opensource.org/licenses/MIT). For more information, see `LICENSE.txt`.
