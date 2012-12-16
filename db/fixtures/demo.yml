@@ -1,19 +1,25 @@
 users:
-  - name: erikj
-    email: erik@erikj.me
-    salt: b295d117135a9763da282e7dae73a5ca7d3e5b11
+
+  - name:            erikj
+    email:           erik@erikj.me
+    salt:            b295d117135a9763da282e7dae73a5ca7d3e5b11
     hashed_password: 0f857ebc043e4b61e4da65e3b99b07aa69bd6d6c
-  - name: jjjj
-    email: jj@jj.me
-    salt: b295d117135a9763da282e7dae73a5ca7d3e5b11
+
+  - name:            jjjj
+    email:           jj@jj.me
+    salt:            b295d117135a9763da282e7dae73a5ca7d3e5b11
     hashed_password: 6651a205a7b69ce824edbe44280ecf7cff09e122
 
 posts:
-  - user: erikj
+
+  - user:    erikj
     content: hello hello
-  - user: erikj
+
+  - user:    erikj
     content: hello again
-  - user: jjjj
+
+  - user:    jjjj
     content: jjjjjjjjjjjjj
-  - user: jjjj
+
+  - user:    jjjj
     content: more j's
