@@ -1,10 +1,28 @@
 
-task :load_models do
+task :connect_redis do
   require 'ohm'
   ENV['REDIS_URL'] = ENV['REDISTOGO_URL'] if ENV.has_key? 'REDISTOGO_URL'
   Ohm.connect
+end
+
+task :load_models=> :connect_redis do
   Dir[ File.join File.expand_path( File.dirname __FILE__ ), '..', '..', 'models', '*.rb' ].each do |model_file|
     require model_file
+  end
+end
+
+desc "clear database"
+task :clear=>:connect_redis do
+  keys = Ohm.redis.keys '*'
+  abort "No keys to delete, aborting" if keys.size <= 0
+  puts "Are you sure you want to delete all #{keys.size} keys from the database? (yes/no)"
+  input = STDIN.gets.strip
+  if input == 'yes'
+    puts "Deleting..."
+    deleted_count = Ohm.redis.del keys
+    puts "Deleted #{deleted_count} keys"
+  else
+    abort 'aborting'
   end
 end
 
