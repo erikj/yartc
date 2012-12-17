@@ -122,6 +122,19 @@ Cuba.define do
       end
     end
 
+    on 'post' do
+
+      on param('content') do |content|
+        post = Post.create :content=>content, :user=>current_user
+        res.write "Created post #{post.inspect}"
+      end
+
+      # catchall for missing params
+      on true do
+        res.write view('oops!')
+      end
+    end
+
   end
 
 end
