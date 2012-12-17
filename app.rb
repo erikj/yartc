@@ -53,6 +53,10 @@ Cuba.define do
       res.redirect '/login'
     end
 
+    on 'post' do
+      res.write view('post')
+    end
+
     # /:username
     # this should be last
     # if user is not found, return 404
