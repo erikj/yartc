@@ -135,7 +135,7 @@ Cuba.define do
             session[:flash][:error] = "Error Creating Post: " + post.errors.inspect
           end
         rescue Exception=>e
-          session[:flash][:error] = "Error Creating Post: " + e.inspect
+          session[:flash][:error] = "Error Creating Post: " + e.inspect.gsub(/</, '&lt;').gsub(/>/, '&gt;')
         end
         res.write view('post') if session[:flash].has_key? :error
 
