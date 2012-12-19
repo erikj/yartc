@@ -18,5 +18,19 @@
                 %a{:href=>'/login'} Login
               %li
                 %a{:href=>'/signup'} Sign Up
+
+    - if session.has_key? :flash
+      - if session[:flash].has_key? :error
+        %div{:class=>"alert alert-error"}
+          = session[:flash][:error]
+      - if session[:flash].has_key? :success
+        %div{:class=>"alert alert-success"}
+          = session[:flash][:success]
+      - if session[:flash].has_key? :notice
+        %div{:class=>"alert"}
+          = session[:flash][:notice]
+      - session.delete :flash
+
+
     .container
       = content
