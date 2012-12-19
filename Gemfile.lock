@@ -1,3 +1,11 @@
+GIT
+  remote: git://github.com/yb66/rack-flash.git
+  revision: 35ac77df9e40b257239cee15c00d54971721644a
+  specs:
+    rack-flash3 (1.0.1)
+      rack
+      rack
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -29,6 +37,7 @@ DEPENDENCIES
   cuba
   haml
   ohm
+  rack-flash3!
   rake
   redis
   tilt
