@@ -125,11 +125,21 @@ Cuba.define do
     on 'post' do
 
       on param('content') do |content|
-        post = Post.create :content=>content, :user=>current_user
-        # TODO: gracefully handle errors, populate session[:flash][:error]
-        session[:flash][:success] = "post successfully created"
-        res.redirect '/'
-   end
+        begin
+          post = Post.new :content=>content, :user=>current_user
+
+          if post.save and post.errors.empty?
+            session[:flash][:success] = "post successfully created"
+            res.redirect '/'
+          else
+            session[:flash][:error] = "Error Creating Post: " + post.errors.inspect
+          end
+        rescue Exception=>e
+          session[:flash][:error] = "Error Creating Post: " + e.inspect
+        end
+        res.write view('post') if session[:flash].has_key? :error
+
+      end
 
       # catchall for missing params
       on true do
