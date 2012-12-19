@@ -9,5 +9,7 @@
         Global
       Timeline
 
+- if current_user
+  %a{:href=>'/post'} New Post
 
 = render 'views/_timeline.haml', :posts=>posts
