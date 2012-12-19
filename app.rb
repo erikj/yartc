@@ -15,7 +15,6 @@ Cuba.plugin Cuba::Render
 Cuba.use Rack::Session::Cookie
 Cuba.settings[:render][:template_engine] = "haml"
 
-
 Cuba.use Rack::Static, root: 'public', urls: ['/css']
 
 def current_user
@@ -27,6 +26,7 @@ def current_user
 end
 
 Cuba.define do
+  session[:flash] ||= {}
   on get do
 
     on root do
@@ -51,6 +51,10 @@ Cuba.define do
       session['user_id'] = nil
       # res.write "I am logout " + session.inspect
       res.redirect '/login'
+    end
+
+    on 'post' do
+      res.write view('post')
     end
 
     # /:username
@@ -118,6 +122,20 @@ Cuba.define do
       end
     end
 
-  end
+    on 'post' do
 
+      on param('content') do |content|
+        post = Post.create :content=>content, :user=>current_user
+        # TODO: gracefully handle errors, populate session[:flash][:error]
+        session[:flash][:success] = "post successfully created"
+        res.redirect '/'
+   end
+
+      # catchall for missing params
+      on true do
+        res.write view('oops!')
+      end
+    end
+
+  end
 end
