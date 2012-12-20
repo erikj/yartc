@@ -91,12 +91,13 @@ Cuba.define do
           res.write "error: passwords must match"
 
         end
-        # TODO: populate flash message w/ 'success'
+        session[:flash][:success] = "User #{user.name} successfully created"
       end
 
       # catchall for missing params
       on true do
-        res.write view('oops!')
+        session[:flash][:error] = "Missing Required Parameters"
+        res.write view('signup')
       end
     end
 
@@ -108,17 +109,20 @@ Cuba.define do
           # set session cookie
           session['user_id'] = user.id
           session[:requester] = env['REMOTE_ADDR']
+          session[:flash][:success] = "Successfully logged in as #{user.name}"
           # TODO: set cookie expiration based on remember_me
           # res.write [username,password,remember_me, session.inspect].join(' | ')
           res.redirect '/'
         else
+          session[:flash][:error] = "Unable to find user #{username}"
           res.redirect '/login'
         end
       end
 
       # catchall for missing params
       on true do
-        res.write view('oops!')
+        session[:flash][:error] = "Missing Required Parameters"
+        res.write view('login')
       end
     end
 
@@ -143,7 +147,8 @@ Cuba.define do
 
       # catchall for missing params
       on true do
-        res.write view('oops!')
+        session[:flash][:error] = "Missing Required Parameters"
+        res.write view('post')
       end
     end
 
