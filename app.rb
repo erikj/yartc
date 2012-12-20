@@ -91,7 +91,7 @@ Cuba.define do
           res.write "error: passwords must match"
 
         end
-        # TODO: populate flash message w/ 'success'
+        session[:flash][:success] = "User #{user.name} successfully created"
       end
 
       # catchall for missing params
@@ -109,10 +109,12 @@ Cuba.define do
           # set session cookie
           session['user_id'] = user.id
           session[:requester] = env['REMOTE_ADDR']
+          session[:flash][:success] = "Successfully logged in as #{user.name}"
           # TODO: set cookie expiration based on remember_me
           # res.write [username,password,remember_me, session.inspect].join(' | ')
           res.redirect '/'
         else
+          session[:flash][:error] = "Unable to find user #{username}"
           res.redirect '/login'
         end
       end
