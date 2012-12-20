@@ -96,7 +96,8 @@ Cuba.define do
 
       # catchall for missing params
       on true do
-        res.write view('oops!')
+        session[:flash][:error] = "Missing Required Parameters"
+        res.write view('signup')
       end
     end
 
@@ -118,7 +119,8 @@ Cuba.define do
 
       # catchall for missing params
       on true do
-        res.write view('oops!')
+        session[:flash][:error] = "Missing Required Parameters"
+        res.write view('login')
       end
     end
 
@@ -143,7 +145,8 @@ Cuba.define do
 
       # catchall for missing params
       on true do
-        res.write view('oops!')
+        session[:flash][:error] = "Missing Required Parameters"
+        res.write view('post')
       end
     end
 
