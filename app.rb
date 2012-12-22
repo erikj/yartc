@@ -60,6 +60,7 @@ Cuba.define do
     on "follow/(\\w+)" do |username|
       user = User.find(:name=>username).first
 
+      # TODO: handle user-not-found case
       if not current_user
         session[:flash][:error] = 'You must be logged in to follow a user'
       elsif user == current_user
