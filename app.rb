@@ -57,6 +57,32 @@ Cuba.define do
       res.write view('post')
     end
 
+    on "follow/(\\w+)" do |username|
+      user = User.find(:name=>username).first
+
+      if not current_user
+        session[:flash][:error] = 'You must be logged in to follow a user'
+      elsif user == current_user
+        session[:flash][:error] = 'You cannot follow yourself'
+      elsif current_user.following.include? user
+        session[:flash][:error] = "You are already following #{user.name}"
+      else
+
+        begin
+          # create follower/following relationships
+          current_user.following.add user
+          user.followers.add         current_user
+          session[:flash][:success] = "You are now following #{user.name}"
+        rescue Exception => e
+          session[:flash][:error] = "There was an error: #{e.inspect.gsub(/</, '&lt;').gsub(/>/, '&gt;')}"
+        end
+
+      end
+
+      res.redirect "/#{username}"
+
+    end
+
     # /:username
     # this should be last
     # if user is not found, return 404
