@@ -15,6 +15,9 @@ class User < Ohm::Model
 
   collection :posts, :Post
 
+  set :following, User
+  set :followers, User
+
   def validate
     assert_present :name
     assert_length  :name, 1..64
