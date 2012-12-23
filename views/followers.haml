@@ -1,0 +1,10 @@
+%h1= "#{user.name} (#{user.id}) / followers"
+
+- if user.followers.size < 1
+  %i None Found
+
+- else
+  %ul
+  - user.followers.each do |follower|
+    %li
+      %a{:href=>"/#{follower.name}"}= follower.name

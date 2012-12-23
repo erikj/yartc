@@ -25,6 +25,18 @@ def current_user
   return user
 end
 
+def find_user_by_name_or_404 username
+  users = User.find :name=>username
+
+  if users.size < 1
+    session[:flash][:error] = "Cannot find user: #{username}"
+    res.write view('404')
+    return false
+  else
+    return users.first
+  end
+end
+
 Cuba.define do
   session[:flash] ||= {}
   on get do
@@ -32,11 +44,12 @@ Cuba.define do
     on root do
       # if user is logged in, display user's timeline, else display global timeline
       if current_user
-        # TODO: display posts of current_user and users that current_user is following
-        res.write view('timeline', :posts=>current_user.posts.sort_by(:created_at, :order=>"DESC"))
+        # posts of current_user and users that current_user is following
+        posts = (current_user.posts.entries + current_user.following.collect{|f| f.posts.entries}).flatten.sort{|a,b|b.created_at<=>a.created_at}
       else
-        res.write view('timeline', :posts=>Post.all.sort_by(:created_at, :order=>"DESC"))
+        posts= Post.all.sort_by(:created_at, :order=>"DESC")
       end
+      res.write view('timeline', :posts=>posts)
     end
 
     on 'signup' do
@@ -122,6 +135,17 @@ Cuba.define do
 
     end
 
+    on "(\\w+)/followers" do |username|
+      if user = find_user_by_name_or_404(username)
+        res.write view('followers',  {:user=>user})
+      end
+    end
+
+    on '(\\w+)/following' do |username|
+      if user = find_user_by_name_or_404(username)
+        res.write view('following',  {:user=>user})
+      end
+    end
 
     # /:username
     # this should be last
