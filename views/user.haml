@@ -1,3 +1,14 @@
 %h1= username + ' / ' + user.id
 
+- if current_user and current_user != user
+  .follow
+    - if current_user.following.include? user
+      %b
+        %a{:href=>"/unfollow/#{user.name}"}
+          = "Unfollow #{user.name}"
+    - else
+      %b
+        %a{:href=>"/follow/#{user.name}"}
+          = "Follow #{user.name}"
+
 = render 'views/_timeline.haml', {:user=>user, :posts=>user.posts.sort_by(:created_at, :order=>"DESC")}
