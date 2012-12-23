@@ -58,26 +58,32 @@ Cuba.define do
     end
 
     on "follow/(\\w+)" do |username|
-      user = User.find(:name=>username).first
 
-      # TODO: handle user-not-found case
-      if not current_user
-        session[:flash][:error] = 'You must be logged in to follow a user'
-      elsif user == current_user
-        session[:flash][:error] = 'You cannot follow yourself'
-      elsif current_user.following.include? user
-        session[:flash][:error] = "You are already following #{user.name}"
+      users = User.find :name=>username
+
+      if users.size < 1
+        session[:flash][:error] = "Cannot find user: #{username}"
       else
 
-        begin
-          # create follower/following relationships
-          current_user.following.add user
-          user.followers.add         current_user
-          session[:flash][:success] = "You are now following #{user.name}"
-        rescue Exception => e
-          session[:flash][:error] = "There was an error: #{e.inspect.gsub(/</, '&lt;').gsub(/>/, '&gt;')}"
-        end
+        user = users.first
+        if not current_user
+          session[:flash][:error] = 'You must be logged in to follow a user'
+        elsif user == current_user
+          session[:flash][:error] = 'You cannot follow yourself'
+        elsif current_user.following.include? user
+          session[:flash][:error] = "You are already following #{user.name}"
+        else
 
+          begin
+            # create follower/following relationships
+            current_user.following.add user
+            user.followers.add         current_user
+            session[:flash][:success] = "You are now following #{user.name}"
+          rescue Exception => e
+            session[:flash][:error] = "There was an error: #{e.inspect.gsub(/</, '&lt;').gsub(/>/, '&gt;')}"
+          end
+
+        end
       end
 
       res.redirect "/#{username}"
@@ -85,26 +91,31 @@ Cuba.define do
     end
 
     on "unfollow/(\\w+)" do |username|
-      user = User.find(:name=>username).first
+      users = User.find :name=>username
 
-      # TODO: handle user-not-found case
-      if not current_user
-        session[:flash][:error] = 'You must be logged in to unfollow a user'
-      elsif user == current_user
-        session[:flash][:error] = 'You cannot unfollow yourself'
-      elsif not current_user.following.include? user
-        session[:flash][:error] = "You are not following #{user.name}"
+      if users.size < 1
+        session[:flash][:error] = "Cannot find user: #{username}"
       else
 
-        begin
-          # delete follower/following relationships
-          current_user.following.delete user
-          user.followers.delete         current_user
-          session[:flash][:success] = "You are no longer following #{user.name}"
-        rescue Exception => e
-          session[:flash][:error] = "There was an error: #{e.inspect.gsub(/</, '&lt;').gsub(/>/, '&gt;')}"
-        end
+        user = users.first
+        if not current_user
+          session[:flash][:error] = 'You must be logged in to unfollow a user'
+        elsif user == current_user
+          session[:flash][:error] = 'You cannot unfollow yourself'
+        elsif not current_user.following.include? user
+          session[:flash][:error] = "You are not following #{user.name}"
+        else
 
+          begin
+            # delete follower/following relationships
+            current_user.following.delete user
+            user.followers.delete         current_user
+            session[:flash][:success] = "You are no longer following #{user.name}"
+          rescue Exception => e
+            session[:flash][:error] = "There was an error: #{e.inspect.gsub(/</, '&lt;').gsub(/>/, '&gt;')}"
+          end
+
+        end
       end
 
       res.redirect "/#{username}"
