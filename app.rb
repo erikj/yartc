@@ -134,6 +134,17 @@ Cuba.define do
 
     end
 
+    on "(\\w+)/followers" do |username|
+      if user = find_user_by_name_or_404(username)
+        res.write "#{username}/followers"
+      end
+    end
+
+    on '(\\w+)/following' do |username|
+      if user = find_user_by_name_or_404(username)
+        res.write "#{username}/following"
+      end
+    end
 
     # /:username
     # this should be last
