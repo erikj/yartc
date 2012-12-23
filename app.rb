@@ -44,11 +44,12 @@ Cuba.define do
     on root do
       # if user is logged in, display user's timeline, else display global timeline
       if current_user
-        # TODO: display posts of current_user and users that current_user is following
-        res.write view('timeline', :posts=>current_user.posts.sort_by(:created_at, :order=>"DESC"))
+        # posts of current_user and users that current_user is following
+        posts = (current_user.posts.entries + current_user.following.collect{|f| f.posts.entries}).flatten.sort{|a,b|b.created_at<=>a.created_at}
       else
-        res.write view('timeline', :posts=>Post.all.sort_by(:created_at, :order=>"DESC"))
+        posts= Post.all.sort_by(:created_at, :order=>"DESC")
       end
+      res.write view('timeline', :posts=>posts)
     end
 
     on 'signup' do
