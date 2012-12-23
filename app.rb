@@ -15,7 +15,7 @@ Cuba.plugin Cuba::Render
 Cuba.use Rack::Session::Cookie
 Cuba.settings[:render][:template_engine] = "haml"
 
-Cuba.use Rack::Static, root: 'public', urls: ['/css']
+Cuba.use Rack::Static, root: 'public', urls: ['/css', '/js']
 
 def current_user
   user = nil
