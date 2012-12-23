@@ -136,7 +136,7 @@ Cuba.define do
 
     on "(\\w+)/followers" do |username|
       if user = find_user_by_name_or_404(username)
-        res.write "#{username}/followers"
+        res.write view('followers',  {:user=>user})
       end
     end
 
