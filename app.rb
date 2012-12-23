@@ -84,6 +84,34 @@ Cuba.define do
 
     end
 
+    on "unfollow/(\\w+)" do |username|
+      user = User.find(:name=>username).first
+
+      # TODO: handle user-not-found case
+      if not current_user
+        session[:flash][:error] = 'You must be logged in to unfollow a user'
+      elsif user == current_user
+        session[:flash][:error] = 'You cannot unfollow yourself'
+      elsif not current_user.following.include? user
+        session[:flash][:error] = "You are not following #{user.name}"
+      else
+
+        begin
+          # delete follower/following relationships
+          current_user.following.delete user
+          user.followers.delete         current_user
+          session[:flash][:success] = "You are no longer following #{user.name}"
+        rescue Exception => e
+          session[:flash][:error] = "There was an error: #{e.inspect.gsub(/</, '&lt;').gsub(/>/, '&gt;')}"
+        end
+
+      end
+
+      res.redirect "/#{username}"
+
+    end
+
+
     # /:username
     # this should be last
     # if user is not found, return 404
