@@ -25,6 +25,18 @@ def current_user
   return user
 end
 
+def find_user_by_name_or_404 username
+  users = User.find :name=>username
+
+  if users.size < 1
+    session[:flash][:error] = "Cannot find user: #{username}"
+    res.write view('404')
+    return false
+  else
+    return users.first
+  end
+end
+
 Cuba.define do
   session[:flash] ||= {}
   on get do
