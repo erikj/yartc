@@ -142,7 +142,7 @@ Cuba.define do
 
     on '(\\w+)/following' do |username|
       if user = find_user_by_name_or_404(username)
-        res.write "#{username}/following"
+        res.write view('following',  {:user=>user})
       end
     end
 
