@@ -1,9 +1,9 @@
 YARTC = {}
 @YARTC = YARTC
 
-# render login view
+# render partial view
 YARTC.showPartial = (partial) ->
-  # replace $('#content') w/ response of '/partial/login'
+  # replace $('#content') w/ response of '/partial/'+partial
   $.get '/partial/'+partial,
     '',
     (data) ->
