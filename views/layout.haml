@@ -22,16 +22,25 @@
               %li
                 %a{:href=>'/signup'} Sign Up
 
+    #alert-error{   :class=>"display-none alert alert-error"   }
+    #alert-success{ :class=>"display-none alert alert-success" }
+    #alert-notice{  :class=>"display-none alert"               }
+
+
     - if session.has_key? :flash
       - if session[:flash].has_key? :error
-        %div{:class=>"alert alert-error"}
-          = session[:flash][:error]
+        :javascript
+          $('#alert-error').show();
+          $('#alert-error').html('#{session[:flash][:error]}');
       - if session[:flash].has_key? :success
-        %div{:class=>"alert alert-success"}
-          = session[:flash][:success]
+        :javascript
+          $('#alert-success').show();
+          $('#alert-success').html('#{session[:flash][:success]}');
       - if session[:flash].has_key? :notice
-        %div{:class=>"alert"}
-          = session[:flash][:notice]
+        :javascript
+          $('#alert-notice').show();
+          $('#alert-notice').html('#{session[:flash][:notice]}');
+
       - session.delete :flash
 
 
