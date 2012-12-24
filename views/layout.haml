@@ -7,12 +7,14 @@
 
     %link{ :href=>"/css/bootstrap_and_overrides.css", :rel=>"stylesheet" }
     %link{ :href=>"/css/yartc.css", :rel=>"stylesheet" }
+
   %body
     .container
       .navbar.navbar-fixed-top
         .navbar-inner
+          / FIXME: link to '/'
           %a.brand{:href => "#"} YARTC
-          %ul{:class=>'nav pull-right'}
+          %ul{:class=>'nav pull-right', :id=>'login-logout-list'}
             - if current_user
               %li
                 %a{:href=>'/logout'} Logout
