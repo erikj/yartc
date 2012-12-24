@@ -52,18 +52,14 @@ Cuba.define do
       res.write view('timeline', :posts=>posts)
     end
 
-    on 'signup' do
-      res.write view('signup')
-    end
-
-    on 'login' do
-      res.write view('login')
+    on 'partial/:action' do |action|
+      res.write render("views/#{action}.haml")
     end
 
     on 'logout' do
       session['user_id'] = nil
-      # res.write "I am logout " + session.inspect
-      res.redirect '/login'
+      session[:flash][:success] = 'You are logged out'
+      res.redirect '/'
     end
 
     on 'post' do

@@ -5,6 +5,7 @@
     %script{:type => "text/javascript", :src=>"//code.jquery.com/jquery-1.8.3.min.js"}
     / %script{:type => "text/javascript", :src=>"/js/coffee-script.js"}
 
+    %script{:type => "text/javascript", :src=>"/js/yartc.js"}
     %link{ :href=>"/css/bootstrap_and_overrides.css", :rel=>"stylesheet" }
     %link{ :href=>"/css/yartc.css", :rel=>"stylesheet" }
 
@@ -16,17 +17,16 @@
           %ul{:class=>'nav pull-right', :id=>'login-logout-list'}
             - if current_user
               %li
-                %a{:href=>'/logout'} Logout
+                %a#logout-link{:href=>'logout'} Logout
             - else
               %li
-                %a{:href=>'/login'} Login
+                %a#login-link{:href=>'javascript:void(0);'} Login
               %li
-                %a{:href=>'/signup'} Sign Up
+                %a#signup-link{:href=>'javascript:void(0);'} Sign Up
 
     #alert-error{   :class=>"display-none alert alert-error"   }
     #alert-success{ :class=>"display-none alert alert-success" }
     #alert-notice{  :class=>"display-none alert"               }
-
 
     - if session.has_key? :flash
       - if session[:flash].has_key? :error
@@ -44,6 +44,5 @@
 
       - session.delete :flash
 
-
-    .container
+    #content{:class=>'container'}
       = content
