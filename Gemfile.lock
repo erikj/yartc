@@ -11,7 +11,7 @@ GEM
       nest (~> 1.0)
       redis
       scrivener (~> 0.0.3)
-    rack (1.4.1)
+    rack (1.5.2)
     raindrops (0.10.0)
     rake (10.0.2)
     redis (3.0.2)
